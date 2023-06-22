@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+
+<div class="container my-3">
+    <div class="row p-0">
+        <div class="card mb-3 ">
+            <img src="{{ product.image.url }}" class="card-img-top w-100 rounded-1 mt-2" alt="Wild Landscape" />
+            <div class="card-body">
+                <h5 class="card-title text-danger">{{ product.title }}</h5>
+                <p class="card-text">
+                    Açıklama : {{ product.text }}
+                </p>
+                <p class="card-text">
+                    <h5>Satıcı : {{ product.user }}</h5>
+                    <h5>Oyun : {{ product.category }}</h5>
+                    <h5>{{ product.type }}</h5>
+                    <h5>Stok : {{ product.stok }}</h5>
+                    <small class="text-muted">Eklenme Tarihi : {{ product.date_now }}</small>
+                </p>
+                <div class="d-flex flex-column mt-4">
+                    <button class="btn btn-primary btn-sm" type="button">Satın Al</button>
+                    <button class="btn btn-outline-primary btn-sm mt-2" type="button">
+                        Satıcının Diğer Ürünlerini Gör
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock main %}
