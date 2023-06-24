@@ -52,33 +52,32 @@
                                         <h4 class="mt-1 mb-5 pb-1">Play 4 Pay!!!</h4>
                                     </div>
 
-                                    <form>
+                                    <form method="POST">
+                                      {% csrf_token %}
                                         
                                         <div class="form-outline mb-4">
-                                            <input type="email" id="form2Example11" class="form-control"
-                                                placeholder="Phone number or email address" />
+                                            <input name="username" type="text" id="form2Example11" class="form-control"
+                                                 />
                                             <label class="form-label" for="form2Example11">Kullanıcı Adı</label>
                                         </div>
                           
                                         <!-- Email input -->
                                         <div class="form-outline mb-4">
-                                          <input type="email" id="form3Example3" class="form-control" />
+                                          <input name="email" type="email" id="form3Example3" class="form-control" />
                                           <label class="form-label" for="form3Example3">Email</label>
                                         </div>
                           
                                         <!-- Password input -->
                                         <div class="form-outline mb-4">
-                                          <input type="password" id="form3Example4" class="form-control" />
+                                          <input name="password1" type="password" id="form3Example4" class="form-control" />
                                           <label class="form-label" for="form3Example4">Şifre</label>
                                         </div>
                           
-                                        <!-- Checkbox -->
-                                        <div class="form-check d-flex justify-content-center mb-4">
-                                          <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-                                          <label class="form-check-label" for="form2Example33">
-                                            En son haberler için kaydol!
-                                          </label>
+                                        <div class="form-outline mb-4">
+                                          <input name="password2" type="password" id="form3Example4" class="form-control" />
+                                          <label class="form-label" for="form3Example4">Şifre Tekrar:</label>
                                         </div>
+                          
                           
                                         <!-- Submit button -->
                                         <button type="submit" class="btn btn-primary btn-block mb-4">
