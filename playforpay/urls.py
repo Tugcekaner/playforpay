@@ -28,8 +28,10 @@ urlpatterns = [
     path('',indexPage, name='index'),
     path('products/',productsPage, name='products'),
     path('buyers/',buyerPage, name='buyers'),
+    path('players/',playerPage, name='players'),
     path('detail/<id>',detailPage, name='detail'),
     path('product_detail/<id>',productDetailPage, name='product_detail'),
+    path('player_detail/<id>',playerDetailPage, name='player'),
 
     # *user
     path('login/',loginPage, name='login'),

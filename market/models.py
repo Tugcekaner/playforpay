@@ -48,3 +48,18 @@ class Product(models.Model):
 
     def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
         return self.title
+
+class Player(models.Model):
+    user = models.ForeignKey(User, verbose_name=(
+        "Kullanıcı - Satıcı"), on_delete=models.CASCADE)
+    real_name = models.CharField(("Gerçek Adı:"), max_length=100,null=True)
+    title = models.CharField(("Oyuncu Adı"), max_length=100)
+    text = models.TextField(("İçerik"))
+    image = models.FileField(
+        ("Oyuncu Resmi"), upload_to='product', max_length=100)
+    price = models.FloatField(("Fiyat"), blank=True, null=True)
+    video_embed = models.TextField(("Video Embed Kodu"), null=True, blank=True)
+
+    def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
+        return self.title
+    

@@ -7,21 +7,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-
-# def loginPage(request):
-
-#     if request.method == "POST":
-#         username = request.POST.get("username")
-#         password = request.POST.get("password")
-
-#     user = authenticate(username=username, password=password) # bulamazsa None
-
-#     context = {}
-
-#     if request.user.is_authenticated:
-#         context.update({"profile": UserInfo.objects.get(user=request.user)})
-#     return render(request,'user/login.html',context)
-
+# * login sayfası
 def loginPage(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -33,7 +19,7 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            context.update({"profile": UserInfo.objects.get(username=request.user.username)})
+            context.update({"profile": User.objects.get(username=request.user.username)})
             return redirect('index')
         else:
             context["login_error"] = "Geçersiz kullanıcı adı veya şifre."
@@ -44,7 +30,7 @@ def loginPage(request):
 
     return render(request, 'login.html',context)
 
-
+# * register sayfası
 def registerPage(request):
 
     if request.method == "POST":
@@ -52,15 +38,17 @@ def registerPage(request):
         email = request.POST.get("email")
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
+        
+        print(password1 +   " " + password2)
 
         if password1 == password2:
             if not User.objects.filter(username=username).exists():
                 if not User.objects.filter(email=email).exists():
                     user = User.objects.create_user(
-                        username=username, email=email)
+                        username=username, email=email,password=password1)
 
-                    # userinfo = UserInfo(user=user)
-                    # userinfo.save()
+                    userinfo = UserInfo(user=user)
+                    userinfo.save()
                     messages.success(request, 'Kaydınız başarıyla oluşturuldu..')
                     return redirect("login")
                 else:
@@ -74,14 +62,13 @@ def registerPage(request):
             messages.warning(request, 'Şifreler aynı değil!!')
             return redirect("register")
 
-    context = {
-        'user':user,
-    }
+    context = {}
 
     if request.user.is_authenticated:
-        context.update({"profile": UserInfo.objects.get(user=request.user)})
-    return render(request,'register.html',context)
+        return redirect("index")
+    return render(request, 'register.html', context)
 
+# * çıkış işlemi
 def logoutUser(request):
    logout(request)
    return redirect("login")

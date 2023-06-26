@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+
+<div class="container my-3">
+    <div class="row p-0">
+        <div class="card mb-3 ">
+            <img src="{{ player.image.url }}" class="card-img-top w-100 rounded-1 mt-2" alt="Wild Landscape" />
+            <div class="card-body">
+                <h5 class="card-title text-danger">{{ player.title }}</h5>
+                <p class="card-text">
+                    Açıklama : {{ player.text }}
+                </p>
+                <p class="card-text">
+                <h5>Gerçek Adı : {{ player.real_name }}</h5>
+                <h5>Fiyat : {{ player.price }} TL</h5>
+                </p>
+
+                {% if player.video_embed %}
+                <hr>
+                <div class="container">
+                    <div class="row d-flex justify-content-center my-3">
+                        <div class="col-6">{{ player.video_embed|safe }}</div>
+                    </div>
+                </div>
+                
+                {% endif %}
+
+                <div class="d-flex flex-column mt-4">
+                    <button class="btn btn-primary btn-sm" type="button">Satın Al</button>
+                </div> 
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock main %}

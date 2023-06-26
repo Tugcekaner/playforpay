@@ -60,3 +60,22 @@ def buyerPage(request):
         'users':users
     }
     return render(request,'buyers.html',context)
+
+def playerPage(request):
+    categories=Category.objects.all()
+    players=Player.objects.all()
+
+    context={
+        'categories':categories,
+        'players':players
+    }
+    return render(request,'players.html',context)
+
+def playerDetailPage(request,id):
+    
+    player = get_object_or_404(Player, id=id)
+
+    context={
+        'player': player
+    }
+    return render(request, 'player_detail.html', context)
