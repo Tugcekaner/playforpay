@@ -25,17 +25,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # * market
-    path('',indexPage, name='index'),
-    path('products/',productsPage, name='products'),
-    path('buyers/',buyerPage, name='buyers'),
-    path('players/',playerPage, name='players'),
-    path('detail/<id>',detailPage, name='detail'),
-    path('product_detail/<id>',productDetailPage, name='product_detail'),
-    path('player_detail/<id>',playerDetailPage, name='player'),
+    path('',indexPage, name='index'), # anasayfa
+    path('buyers/',buyerPage, name='buyers'), # satıcılar
+    path('detail/<id>',detailPage, name='detail'), # oyun detay
+    path('products/',productsPage, name='products'), # ürünler
+    path('product_detail/<id>',productDetailPage, name='product_detail'), # ürün detay
+    path('players/',playerPage, name='players'), # oyuncular
+    path('player_detail/<id>',playerDetailPage, name='player'), # oyuncu detay
 
     # *user
-    path('login/',loginPage, name='login'),
-    path('register/',registerPage, name='register'),
+    path('login/',loginPage, name='login'), # login
+    path('register/',registerPage, name='register'), # register
     path('logout', logoutUser, name='logoutUser'), # çıkış
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

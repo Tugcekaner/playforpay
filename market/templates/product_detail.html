@@ -14,7 +14,7 @@
                 </p>
                 <p class="card-text">
                     <h5>Satıcı : {{ product.user }}</h5>
-                    <h5>Oyun : {{ product.category }}</h5>
+                    <h5>Oyun : <a href="/detail/{{ product.category.id }}"> {{ product.category }}</a></h5>
                     <h5>{{ product.type }}</h5>
                     <h5>Stok : {{ product.stok }}</h5>
                     <small class="text-muted">Eklenme Tarihi : {{ product.date_now }}</small>

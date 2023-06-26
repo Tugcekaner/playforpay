@@ -5,11 +5,12 @@ from django.utils.text import slugify
 
 # Create your models here.
 
+# * oyunlar
 class Category(models.Model):
     title = models.CharField(("Kategori"), max_length=50)
     slug = models.SlugField(("Slug"), blank=True)
     img = models.FileField(("Oyun Resmi"), upload_to='static', max_length=100,null=True)
-
+    video_embed = models.TextField(("Video Embed Kodu"), null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -18,7 +19,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-
+# * satılan ürün tipi
 class Type(models.Model):
     title = models.CharField(("Kategori"), max_length=50)
     slug = models.SlugField(("Slug"), blank=True)
@@ -30,7 +31,7 @@ class Type(models.Model):
     def __str__(self):
         return self.title
 
-
+# * ürün
 class Product(models.Model):
     user = models.ForeignKey(User, verbose_name=(
         "Kullanıcı - Satıcı"), on_delete=models.CASCADE)
@@ -49,6 +50,7 @@ class Product(models.Model):
     def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
         return self.title
 
+# * oyuncu
 class Player(models.Model):
     user = models.ForeignKey(User, verbose_name=(
         "Kullanıcı - Satıcı"), on_delete=models.CASCADE)

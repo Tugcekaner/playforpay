@@ -5,6 +5,8 @@ from .models import *
 from django.urls import reverse
 
 # Create your views here.
+
+# * Ana Sayfa
 def indexPage(request):
     categories=Category.objects.all()
     product=Product.objects.all()
@@ -16,6 +18,7 @@ def indexPage(request):
 
     return render(request,'index.html',context)
 
+# * Oyun detay sayfası
 def detailPage(request,id):
 
     categories = get_object_or_404(Category, id=id)
@@ -31,6 +34,7 @@ def detailPage(request,id):
     }
     return render(request, 'detail.html', context)
 
+# * Ürün detay sayfası
 def productDetailPage(request,id):
 
     product = get_object_or_404(Product, id=id)
@@ -40,6 +44,7 @@ def productDetailPage(request,id):
     }
     return render(request, 'product_detail.html', context)
 
+# * ürünler sayfası
 def productsPage(request):
     categories=Category.objects.all()
     products=Product.objects.all()
@@ -49,6 +54,7 @@ def productsPage(request):
     }
     return render(request,'products.html',context)
 
+# * satıcı sayfası
 def buyerPage(request):
     categories=Category.objects.all()
     products=Product.objects.all()
@@ -61,6 +67,7 @@ def buyerPage(request):
     }
     return render(request,'buyers.html',context)
 
+# * oyuncular sayfası
 def playerPage(request):
     categories=Category.objects.all()
     players=Player.objects.all()
@@ -71,6 +78,7 @@ def playerPage(request):
     }
     return render(request,'players.html',context)
 
+# * oyuncular detay sayfası
 def playerDetailPage(request,id):
     
     player = get_object_or_404(Player, id=id)
@@ -79,3 +87,4 @@ def playerDetailPage(request,id):
         'player': player
     }
     return render(request, 'player_detail.html', context)
+
