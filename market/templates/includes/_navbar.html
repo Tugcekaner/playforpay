@@ -11,7 +11,7 @@
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="#">
+      <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'index' %}">
         <img
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABWVBMVEX///8+2/9VzfeYpOFixfOXpeGao+FcyfV3uOx0uu2Vp+JxvO55t+udod/2a8K2kte1k9e6kNZsv/CPquSom9xfx/RnwvKAs+mhn95Sz/iul9qCsunjd8jde8qqmdvzbcPl9f3OhM+KrebCi9PUgM3x7fjrcsbo8/zIiNHfecruccVH1vzWf8w02v/c8/2dl9vx/P92sOnN1PGG2/rR5vh2xfGEve2lqeLl5fba1vBktu3MvObFyOyC0vZt0/j69fua4vu+2/WQyfHz4PKfteizwuvdxOipp+G0oN34y+j2ntW48P9r4P5xyPOls+an7f97q+eA5v/E8P6rzfCn3/nBwuqTvOvC5fm8ruLS4fbf0+6u5Pqdwu3NreDAldfHoNvUtePbnNjWi9HYy+zRuOTlrd302vDth834zem9mtrp3PH5rdv97Pf6ndX5wuXbodr7X73pjtH5ic1pr9N2AAAMo0lEQVR4nO2c+VvaSheAsVS0tkKxrbUKinXBFRCXoiJpUawLbrhQ1N7WWu2in9X+/z98mTOThZBlwgS9z3PP+9wfbiEQXiczc87MSXw+BEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEH+Y6QSmzt7xWLTuI43QI7SkmuR2dKY1Xg6V80RoUf+r2fl7crKSiFbGXpgvdhOsWmSYLSTeQQQu5ZXMo+BTpmOzg6Zp4QnMq2trc9kXgM9wFvKC5m2F4V0/MH8NouyW5NMbfsxP4NgJ9DRoRgSvydU8Jm5oKzY1ty2Pf8Qeqkdpscl+MpKsNVRUMbvD6Sl+xbcaWJ6jW5BmeZmWTGQvle/kubXVKPHBFtsBBdUpmgnnJLZVanyY4KB9neZ+xPc0/zkQaa4t1lKKMRUEiDYonuFEa9iZooI7sdryVTShTbZjgm2tycP78kvoTbg5GTxfSJldRxtQsu3GbLh69dTFau34+lt4kcEu7qSH+9l8igpA8zk5F7C7sAcXKIxh6/7MCX3wKkZmyOkrL8dBAn3cKVuqn47Ds2zBH3Q9o8gsw+GDlNeWhF8mWz4xLGjCO45XX6+AxhkDhyOgmF0yvG8h8yw4YqsBSebSs7Hlugwav+XgIu058j52zIfk0Sw0YolJlh0bEACnSa27A6Jg2DPB45vkz4lXwK9v7l+a13EmOAe3+EHdB7cKlv9PeL7VLCH6w/mOySKvb293Y0bUek0wSvoS+kn+gXdNC9P9AwQ3OVpQkK2lwj2dq/VK+DEnjtBn6/MF6px9ELGIQh2dy/W8/OdSVDBoouPnHgr6PN9AsHu542ZFou0F/L1GUbZUXD31NWPWOsGw4Zcp3Qcndw0eSvFYlKztw46O/QJb6s+4ZX9jsziNSmdzc6bp0tD1DB0LGBiBTSh2TWamFbSidyJyefi5bzpksXR0dHpvmm0lm6GUNQ8XTp/Lgs+D/0SUTGH9cLaIOxEnw/mXF3D5mT9fpJNtLdnTd+W/WTC3k+K78Gwtgk3DQmv8IkyASVdSpqOJ8chYhj6LnwiI03mvTBlEGxxikMd2fYr+WDXtukBxDAUCouex0iKXqQ1F+GJKviIZfSi12lAFezqMh1tvoeIYNjrwKZkMc5M61cNudIlB6SAJthlanEcIoJhr0dT6IaTOzWv58AQMo1UDpIJu2SWh4AmaN6GQ2EiGP4seB4jRVh0qm2fHLQgfX0JsqWy4Jm2NcFP5kc8J4LhfwTPYyAFgibxDBi2qIaPxQ0zSUXQfCz1+T6DYdjbFVQyG46Pm0z31YaPPTD0HSqC5vOhPNSA4IC3M6Kc24+Pj5tkFTkYZfSGov1QjmnAr8sylz8GwYFV4RPp2YO9l6rZkC6K5mAYZYaQD5bjZE1UaM6Q5i3jUsLQABEc8HaoKcKitjbQxKarJnrNsFPJl2aFr1ZLpH+I4MAXL78zRdfu1YY5MUQyqqEuH3w660GMas6XAcDLoSZBNwiVfxpj0VeKYXXCO8d/AmnI9uca3v4KgiNeRjWbIKgMpcZYVInUlowZ/T7n12e2mwP+bcu8/feaHImu6YbOc2roZVRTAsP37F/vjYJL9PWZmiULvus0G6DpksXGyyILtbVsYpkafq3bx4Sqbqjku7kW2KPfUtMJdc2CZfQLXDNHWt1dMp0AzyFbIornyksSCI78EVIykHo/XlRH0jcsUktR9IcpO2OpPCxZcK30+tV0KWnSGaXniqAuigHBkRERI1voFWp/Be7DmgyPYUWXLplM8rQJQVBLJ74Qv5H+hu180y7oaNjK14ZZXbpk0hMXNcGwGsWsUsNLt7+cFz7DVs42zOrSJTPDkCqoxWmX1NDbuE0HHUXtj9mHdVG+q1QVNNtWOg4pguEB9Sod6gdDT4caPY90sagVeVgX5RppAuoOr+lIE1IE9fkSMezvb9hQk1OXLGih05Jywc7MqlsvIGi7ea0yrwqaZhPnit+AboY/I4L9g8IqFhwYy0jYjB+rWbrnm/HTXbb54Gq4Nlv62k8YXBYTsSRVUydDt+EPDIJT3FHbYTKZ/GQdtX0muVJVFLpKDRs2mJaMpVy0T+YNgm42lRwwdtBlanjh3RkMlFuqKp06NEOdoLtNJXdI1PDMq+9LbJYMPSp2sKUv5VINiSBs8T47FV/NsEH6RgQHv3n0dSQdfGM+aKS2INZWDImgB2bS+ffv5/Yh2RkRHBy8Fj+ZTAyq8abN39yCZIIZQiwqbngeglneNmK5IH6DE94MpiVIeHPmb85CthSD/89DHxQ2XGTpUthue2mVGq6LngygCa9FG8526A1bPWjD32o+aLdHuAyCE94MpnTzxWx718cMn8bg//OwiS1quKblgzaraUMgOOHNYHqi25qogRpSqzkI1UQNdfmg3cL9twnAmxRx2voi9eXpmsVcfm6OCjqVGTohhTRBuz3CMxAc9SgJLp1YFup9qClKFz2Zlg/atuEFEYyONixuU0kZY1HeCi5LPqvpku2q9s+oLBgdvRE9nTMzC1WCLlaBLciElRYcsFvyXY7KgtHRxkWmGuUFfSxqDH3SK5RCTfdMHx4eLsrUJIWriqDtlC+NRonhneCv5yKef7IAnXBqruYSLbxQ7yswvPMxCfWwvb29NWV4x7C1NOCwpE0NI0I/nR+2SFr7unbjhL+6xGmeVfzKit2148nv1VXH/c9vRHA04k1kWjcZ7c6Q5uoM/lAV7O2ur9DwYlQWHI00fjC1R7v1JVDtMZ9UBM3akIf1UULkHgZTWypw8xm5r6dgeOdjEvR6u7vPTT/pyHKECEY2hH+jIFKlUknL1F6J84uUeothpQgRjPwQ+33/aqJgGBGP28rTFmnFQ3NH/CLDwkkwKXQSrsZrCBfU8Kfg1yS4bu15ENapoWjcdgLLhv9Kw+VhIjgsOphOw7po3T1RGnKm3qFCAsFh0cGUVuPVk7dLlUIb7O6y3bOkBr1pAirSSaoU+rJaV+HIj2FAbDBN0aXtmOsPxgtV9/Aq9w92aZEMc2QZ/Zc6Skc2QLBPLDKNPXa8/cyU7At3gnI28ct1O15QQ7HBtAxL90suPxVfaXMrWE+x4SURHOu7cvmxag5gb8JlEV686j567R7el2o2ofqFtB1eOSP86u4810RwrE9sMD2AzRd3hqogab93hI8qa3p+UcIDTNCtokQEx/rEBtODx9r2IO95VcF3ab6uJcEWKNQ5ubtQieBY319XnzGy1OnasMCeZdHsJmmQmOOIq4HRC8MD3fYgHxk6yPi3XU5Tx3XUqoGgJ4ZuJvwVJuj6VL9HSK1av4v6dAkEg+KGHR0uVnkrbBSt41y0lMtFjcx1nyzYF/xfHefSKMMGaJ7/A3TVyV9X4n7msljtMthHDMXmwxhsgM5yH5+mgu6vUcIyVDrxN+IVMQwGxXZJU3T3jHs/6QVcooE6117+9JNKJ+5G/AFNeCu4YpoHQ94pP90MkUx9TahUyfAWWFwHSQsGx+o8mUIZ9gd5OyIN1eptQtKIpIiEM5S+CRJBwYGG7J7B9hnfjFhpBsF6m1BulkFiyNmIY2B4K7pOQ0u5OBuRrv0GBO6DII04OMHVE1kTBus/GSOxwF11n/aDYP1NCI1Iiix4DqWCt2JzBTALT8Z74nygxNIloSc6/IEqEo71sw1owOCtBxv5MwuwAepcSblN75sQaUKlTibq2LnWmaAHTagUAjlWNBeoYLvg3UgXE6ROJuqwkn0ZZHhSi5GiD290qEHIMkGrGz95kSZokYWt4jLzEx9IKTMLUEZiq8gEA++Ez3YZnYAqC5sBVWnBW9G5UGWfPm7FpqqZ9cF20WuUcAFVFjZlFjeKoPhMoZKfguetTL02nzQyzcrNWZ48GecsSosQ7kyv1Ou/t4qgl3cFnU7RB8rsntYG4Zltv7Js6NGDxr6NRqN0g7fG8XojqLagt0UKp+ypXLJjRS8ppYkfu0Q9e7bR2SjdpI8M363rPK7X/wZZJOO5IDz9jz1edPftSqFSycQzmXRhRZ7l1YVfDx/edEE36WHrJbJxdbO+vn61MSbL9SmCY97fuDbzWvcAVd3jRZWFX7dLT/b8jDCG6bKvAvO7bUiBQmp/963lE2I9f0Ts9cawIggLv9RSacBGVdHEj3bNBGW/bANudrxku2c6QRpsBxtZQxM/NQo2yo9weVfTgre3Y42uEZIqhbe6hzT7tw8b+dDU65u74T5d6/29atTNXFVI8Uq6QMimM41/7K10vX5ztbGxcXV1s/zAZXoIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgtwL/wfPuXs1cLPxzAAAAABJRU5ErkJggg=="
           height="35" loading="lazy" />
@@ -19,10 +19,10 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'index' %}">Ana Sayfa</a>
+          <a class="nav-link text-gradient" href="{% url 'index' %}">Ana Sayfa</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Hakkımızda</a>
+          <a class="nav-link" href="{% url 'about' %}">Hakkımızda</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'players' %}">Oyuncular</a>
@@ -35,7 +35,7 @@
           <a class="nav-link" href="{% url 'buyers' %}">Satıcılar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">SSS</a>
+          <a class="nav-link" href="{% url 'sss' %}">SSS</a>
         </li>
       </ul>
       <!-- Left links -->

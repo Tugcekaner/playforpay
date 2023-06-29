@@ -18,6 +18,15 @@ def indexPage(request):
 
     return render(request,'index.html',context)
 
+# * Hakkımızda sayfası
+def aboutPage(request):
+    return render(request,'about.html')
+
+# * SSS sayfası
+def faqPage(request):
+    return render(request,'faq.html')
+
+
 # * Oyun detay sayfası
 def detailPage(request,id):
 

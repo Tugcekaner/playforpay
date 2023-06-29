@@ -26,6 +26,8 @@ urlpatterns = [
 
     # * market
     path('',indexPage, name='index'), # anasayfa
+    path('about/', aboutPage, name='about'), # hakkımızda
+    path('sss/', faqPage, name='sss'), # 
     path('buyers/',buyerPage, name='buyers'), # satıcılar
     path('detail/<id>',detailPage, name='detail'), # oyun detay
     path('products/',productsPage, name='products'), # ürünler
