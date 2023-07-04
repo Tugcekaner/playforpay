@@ -27,17 +27,21 @@ urlpatterns = [
     # * market
     path('',indexPage, name='index'), # anasayfa
     path('about/', aboutPage, name='about'), # hakkımızda
-    path('sss/', faqPage, name='sss'), # 
-    path('buyers/',buyerPage, name='buyers'), # satıcılar
+    path('sss/', faqPage, name='sss'), # sık sorulan sorular
+    path('sellers/',sellerPage, name='sellers'), # satıcılar
+    path('sellerproducts/<id>',sellerProductPage, name='sellerproducts'), # satıcıya ait ürünler
     path('detail/<id>',detailPage, name='detail'), # oyun detay
     path('products/',productsPage, name='products'), # ürünler
     path('product_detail/<id>',productDetailPage, name='product_detail'), # ürün detay
+    path('myproduct/',myProductPage, name='myproducts'), # ürünlerim sayfası
+    path('delproduct/<id>', delProduct, name='delproduct'), # ürün silme
     path('players/',playerPage, name='players'), # oyuncular
     path('player_detail/<id>',playerDetailPage, name='player'), # oyuncu detay
 
     # *user
     path('login/',loginPage, name='login'), # login
     path('register/',registerPage, name='register'), # register
+    path('profile/',profilePage, name='profile'), # profile
     path('logout', logoutUser, name='logoutUser'), # çıkış
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

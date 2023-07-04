@@ -13,17 +13,15 @@
                     Açıklama : {{ product.text }}
                 </p>
                 <p class="card-text">
-                    <h5>Satıcı : {{ product.user }}</h5>
-                    <h5>Oyun : <a href="/detail/{{ product.category.id }}"> {{ product.category }}</a></h5>
-                    <h5>{{ product.type }}</h5>
-                    <h5>Stok : {{ product.stok }}</h5>
-                    <small class="text-muted">Eklenme Tarihi : {{ product.date_now }}</small>
+                    <h5 class="text-primary">Satıcı : {{ product.user }}</h5>
+                    <h5 class="text-info">Fiyat : {{ product.price }} TL</h5>
+                    <h5 class="text-secondary">Oyun : <a href="/detail/{{ product.category.id }}" class="text-danger"> {{ product.category }}</a></h5>
+                    <h5 class="text-warning">Ürün Tipi : {{ product.type }}</h5>
+                    <h5 class="text-success">Stok : {{ product.stok }}</h5>
+                    <small class="text-danger">Eklenme Tarihi : {{ product.date_now }}</small>
                 </p>
                 <div class="d-flex flex-column mt-4">
                     <button class="btn btn-primary btn-sm" type="button">Satın Al</button>
-                    <button class="btn btn-outline-primary btn-sm mt-2" type="button">
-                        Satıcının Diğer Ürünlerini Gör
-                    </button>
                 </div>
             </div>
         </div>

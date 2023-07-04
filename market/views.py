@@ -2,7 +2,9 @@
 import random
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
-from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 
@@ -64,7 +66,7 @@ def productsPage(request):
     return render(request,'products.html',context)
 
 # * satıcı sayfası
-def buyerPage(request):
+def sellerPage(request):
     categories=Category.objects.all()
     products=Product.objects.all()
     users=User.objects.all()
@@ -74,7 +76,22 @@ def buyerPage(request):
         'products':products,
         'users':users
     }
-    return render(request,'buyers.html',context)
+    return render(request,'sellers.html',context)
+
+# * satıcıya ait ürünler sayfası
+def sellerProductPage(request,id):
+    user=User.objects.get(id=id)
+    products=Product.objects.filter(user=user)
+
+    other_sellers = User.objects.exclude(id=id)
+    random_sellers = random.sample(list(other_sellers), 6)
+
+    context={
+        'products': products,
+        'random_sellers': random_sellers
+    }
+    return render(request,'seller_product.html',context)
+
 
 # * oyuncular sayfası
 def playerPage(request):
@@ -97,3 +114,37 @@ def playerDetailPage(request,id):
     }
     return render(request, 'player_detail.html', context)
 
+# * ürünlerim sayfası
+def myProductPage(request):
+    products=Product.objects.filter(user=request.user)
+    if request.method == "POST":
+        title=request.POST.get("title")
+        price=request.POST.get("price")
+        stok = request.POST.get("stok")
+        text = request.POST.get("text")
+        image = request.FILES.get("image")
+        productid = request.POST.get("productid")
+        product = products.get(id=productid)  # değiştirilcek ürün
+        product.title = title
+        product.price = price
+        product.stok = stok
+        product.text = text
+        if image is not None:
+            product.image = image
+        product.save()
+        return redirect("myproducts")
+
+    context = {
+        "products": products,
+    }
+    return render(request,"myproduct.html",context)
+
+
+# * ürünlerimden ürün silme
+def delProduct(request, id=None):
+    if id is not None:
+        product = Product.objects.get(id=id)
+        product.delete()
+    else:
+        messages.warning(request, "Ürün bulunamadı!")
+    return redirect("myproducts")
