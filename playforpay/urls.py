@@ -41,8 +41,13 @@ urlpatterns = [
     path('shoppingcart/',shoppingPage,name='shoppage'), # sepet sayfası
     path('shopDelete/<id>', shopDelete, name='shopDelete'), # sepetten ürün silme
 
+    # * ödeme kısmı
+    path('payment/',payment,name='payment'),
+    path('result/',result,name='result'),
+    path('success/',success,name='success'),
+    path('failure/',fail,name='failure'),
 
-    # *user
+    # * user
     path('login/',loginPage, name='login'), # login
     path('register/',registerPage, name='register'), # register
     path('profile/',profilePage, name='profile'), # profile

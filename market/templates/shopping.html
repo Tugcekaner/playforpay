@@ -133,8 +133,11 @@
                               <h5 class="text-danger">{{ total_price }} TL</h5>
                            </div>
 
-                           <button type="button" class="btn btn-success btn-block btn-lg"
-                              data-mdb-ripple-color="dark">Ödeme Yap</button>
+                           <form method="POST">
+                              {% csrf_token %}
+                              <button type="submit" name="payment" class="btn btn-success btn-block btn-lg"
+                                 data-mdb-ripple-color="dark">Ödeme Yap</button>
+                           </form>
 
                         </div>
                      </div>

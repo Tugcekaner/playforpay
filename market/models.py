@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.utils import timezone
 
 # Create your models here.
 
@@ -75,12 +76,22 @@ class Shoping(models.Model):
    product = models.ForeignKey(Product, verbose_name=("Ürün"), on_delete=models.CASCADE)
    piece = models.IntegerField(("Ürün adeti"))
    price = models.FloatField(("Ürün Sepet Fiyatı"), default=0)
+   paymentCheck = models.BooleanField(default=False,verbose_name="Ödeme yapıldı mı?") #type checkbox
 
    def save(self, *args,**kwargs):
       self.price = int(self.piece) * float(self.product.price)
       self.price = round(self.price,2)
       super().save(*args, **kwargs)
 
-   def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
-      return self.user.username
+   def __str__(self): 
+      return self.user.username 
 
+# * ödeme
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Shoping)
+    total = models.IntegerField()
+    paymentDate = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.user.username
