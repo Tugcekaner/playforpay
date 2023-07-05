@@ -34,9 +34,13 @@ urlpatterns = [
     path('products/',productsPage, name='products'), # ürünler
     path('product_detail/<id>',productDetailPage, name='product_detail'), # ürün detay
     path('myproduct/',myProductPage, name='myproducts'), # ürünlerim sayfası
+    path('addProduct/',addProductPage, name='addProduct'), # ürün ekleme
     path('delproduct/<id>', delProduct, name='delproduct'), # ürün silme
     path('players/',playerPage, name='players'), # oyuncular
     path('player_detail/<id>',playerDetailPage, name='player'), # oyuncu detay
+    path('shoppingcart/',shoppingPage,name='shoppage'), # sepet sayfası
+    path('shopDelete/<id>', shopDelete, name='shopDelete'), # sepetten ürün silme
+
 
     # *user
     path('login/',loginPage, name='login'), # login

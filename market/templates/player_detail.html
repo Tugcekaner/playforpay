@@ -15,6 +15,7 @@
                 <p class="card-text">
                 <h5>Gerçek Adı : {{ player.real_name }}</h5>
                 <h5>Fiyat : {{ player.price }} TL</h5>
+                <h5>Stok : {{ player.stok }}</h5>
                 </p>
 
                 {% if player.video_embed %}
@@ -28,8 +29,14 @@
                 {% endif %}
 
                 <div class="d-flex flex-column mt-4">
-                    <button class="btn btn-primary btn-sm" type="button">Satın Al</button>
-                </div> 
+                    <form class="d-flex mt-3" method="POST" action="">
+                        {% csrf_token %}
+                        <label class="d-flex align-items-center" for="">Adet:
+                           <input class="form-control form-control-sm m-2" type="number" value="1" min="1" max="{{ product.stok }}" name="piece" id="" style="width: 100px;">
+                        </label>
+                        <button class="btn btn-info" name="submit" value="shopForm" type="submit" >Oyun Isteği Gönder</button>
+                     </form>
+                </div>
 
 
 

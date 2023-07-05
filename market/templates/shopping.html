@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block css %}
+<style>
+   @media (min-width: 1025px) {
+      .h-custom {
+         height: 100vh !important;
+      }
+   }
+
+   .card-registration .select-input.form-control[readonly]:not([disabled]) {
+      font-size: 1rem;
+      line-height: 2.15;
+      padding-left: .75em;
+      padding-right: .75em;
+   }
+
+   .card-registration .select-arrow {
+      top: 13px;
+   }
+
+   .bg-grey {
+      background-color: #eae8e8;
+   }
+
+   @media (min-width: 992px) {
+      .card-registration-2 .bg-grey {
+         border-top-right-radius: 16px;
+         border-bottom-right-radius: 16px;
+      }
+   }
+
+   @media (max-width: 991px) {
+      .card-registration-2 .bg-grey {
+         border-bottom-left-radius: 16px;
+         border-bottom-right-radius: 16px;
+      }
+   }
+</style>
+{% endblock css %}
+
+
+{% block main %}
+<section class="h-100">
+   <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+         <div class="col-12">
+            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+               <div class="card-body p-0">
+                  <div class="row g-0">
+                     <div class="col-lg-8">
+                        <div class="p-5">
+                           <form method="POST">
+                              <div class="d-flex justify-content-between align-items-center mb-5">
+                                 <h1 class="fw-bold mb-0 text-black">Sepet</h1>
+                                 <button type="submit" class="btn btn-info" name="submit" value="shopFrom">Sepeti Güncelle</button>
+                                 <h6 class="mb-0 text-muted">Sepetteki ürün sayısı: {{ shop|length }}</h6>
+                              </div>
+
+                              {% csrf_token %}
+                              {% for i in shop %}
+                              <hr class="my-4">
+                              <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                 <div class="col-md-2 col-lg-2 col-xl-2">
+                                    <img src="{{ i.product.image.url }}" style="height: 80px; object-fit: contain;"
+                                       class="w-100 img-fluid rounded-3">
+                                 </div>
+                                 <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <h6 class="text-muted">{{ i.product.category.title }}</h6>
+                                    <a href="#">
+                                       <h6 class="text-black mb-0">{{ i.product.title }}</h6>
+                                    </a>
+                                 </div>
+                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                    <button type="button" class="btn btn-link px-2"
+                                       onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                       <i class="fas fa-minus"></i>
+                                    </button>
+
+                                    <input type="hidden" name="id{{ i.id }}" value="{{ i.id }}">
+                                    <input id="form1" style="width: 60px;" min="0" name="piece{{ i.id }}"
+                                       value="{{ i.piece }}" type="number" class="form-control form-control-sm" />
+
+                                    <button type="button" class="btn btn-link px-2"
+                                       onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                       <i class="fas fa-plus"></i>
+                                    </button>
+                                 </div>
+                                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                    <h6 class="mb-0">₺{{ i.price }}</h6>
+                                 </div>
+                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                    <a href="{% url 'shopDelete' i.id %}" class="text-muted"><i class="fas fa-times"></i></a>
+                                 </div>
+                              </div>
+                              {% endfor %}
+
+                           </form>
+
+                           <div class="pt-5">
+                              <h6 class="mb-0">
+                                 <a href="{% url 'products' %}" class="text-body">
+                                    <i class="fas fa-long-arrow-alt-left me-2"></i>Alışverişe Devam Et
+                                 </a>
+                              </h6>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 bg-grey">
+                        <div class="p-5">
+                           <h3 class="fw-bold mb-5 mt-2 pt-1 text-warning">Ödemeye Geç</h3>
+                           <hr class="my-4">
+
+                           <div class="d-flex justify-content-between mb-4">
+                              <h5 class="text-uppercase text-info">{{ shop|length }} ürün</h5>
+                              <h5 class="text-info">{{ total_price }} TL</h5>
+                           </div>
+
+                           <h5 class="text-uppercase mb-3 text-success">Teslimat :</h5>
+
+                           <div class="mb-4 pb-2">
+                              <select class="select">
+                                 <option value="1">Dijital Teslim- 0.00</option>
+                              </select>
+                           </div>
+
+                           <hr class="my-4">
+
+                           <div class="d-flex justify-content-between mb-5">
+                              <h5 class="text-uppercase text-danger">Toplam Tutar :</h5>
+                              <h5 class="text-danger">{{ total_price }} TL</h5>
+                           </div>
+
+                           <button type="button" class="btn btn-success btn-block btn-lg"
+                              data-mdb-ripple-color="dark">Ödeme Yap</button>
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+{% endblock main %}

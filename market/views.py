@@ -10,12 +10,14 @@ from django.contrib.auth.models import User
 
 # * Ana Sayfa
 def indexPage(request):
+    shop=Shoping.objects.all()
     categories=Category.objects.all()
     product=Product.objects.all()
 
     context={
         'categories':categories,
-        'product':product
+        'product':product,
+        'shop':shop
     }
 
     return render(request,'index.html',context)
@@ -47,8 +49,27 @@ def detailPage(request,id):
 
 # * Ürün detay sayfası
 def productDetailPage(request,id):
-
     product = get_object_or_404(Product, id=id)
+
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            submit = request.POST.get("submit")
+            if submit == "shopForm":
+                piece = request.POST.get("piece")
+            
+                if 1 <= int(piece) <= int(product.stok): 
+                    if not Shoping.objects.filter(user=request.user, product=product).exists():
+                        shop = Shoping(user=request.user, product=product, piece=piece)
+                    else:
+                        shop = Shoping.objects.filter(user=request.user, product=product).get()
+                        if (int(shop.piece)+int(piece)) <= int(product.stok):
+                            shop.piece += int(piece)
+                        else:
+                            messages.warning(request, 'maximum ürün adetini aştınız. Ekleyebileceğiniz ürün adeti: '+str(int(product.stok)-int(shop.piece)))
+                    shop.save()
+                    return redirect('shoppage')
+            else:
+               messages.warning(request, 'Stok sayısını aştınız.')
 
     context={
         'product':product
@@ -106,8 +127,18 @@ def playerPage(request):
 
 # * oyuncular detay sayfası
 def playerDetailPage(request,id):
-    
     player = get_object_or_404(Player, id=id)
+
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            submit = request.POST.get("submit")
+            if submit == "shopForm":
+                piece = request.POST.get("piece")
+                
+                if 1 <= int(piece) <= int(player.stok):
+                    messages.success(request, 'Oyun isteği gönderildi.')
+                else:
+                    messages.warning(request, 'Stok sayısını aştınız.')
 
     context={
         'player': player
@@ -148,3 +179,71 @@ def delProduct(request, id=None):
     else:
         messages.warning(request, "Ürün bulunamadı!")
     return redirect("myproducts")
+
+# * Ürün ekleme sayfası
+def addProductPage(request):
+    categories=Category.objects.all()
+    types=Type.objects.all()
+
+    if request.method == "POST":
+        title = request.POST.get("title")
+        price = request.POST.get("price")
+        stok = request.POST.get("stok")
+        text = request.POST.get("text")
+        image = request.FILES.get("image")
+        slugcate = request.POST.get("category")
+        category = categories.get(slug=slugcate)
+        slugtype = request.POST.get("type")
+        type = types.get(slug=slugtype)
+
+        product = Product(title=title, stok=stok, category=category, price=price,
+                    text=text,type=type, image=image, user=request.user)
+
+        product.save()
+        return redirect("myproducts")
+
+    context={
+        'categories':categories,
+        'types':types,
+    }
+    return render(request,'addProduct.html',context)
+
+# * sepet sayfası
+def shoppingPage(request):
+    shop=Shoping.objects.filter(user=request.user)
+    total_price = 0
+
+    for i in shop:
+        total_price += i.price
+
+    if request.method == "POST":
+        index = 0
+        for k,v in request.POST.items():
+            if "csrfmiddlewaretoken" not in k and "submit" not in k:
+                if index%2 == 0:
+                    shoping = shop.get(id=v)
+                    shoping.save()
+                elif index%2 == 1:
+                    if int(shoping.product.stok) >= int(v):
+                        shoping.piece = v
+                        shoping.save()
+                    else:
+                        messages.warning(request, shoping.product.title+' ürünün stok sayısını aştınız. max:'+ str(shoping.product.stok))
+            index +=1
+        shoping.save()
+        return redirect('shoppage')
+
+    context = {
+      "shop":shop,
+      "total_price": total_price,
+    }
+    return render(request,'shopping.html',context)
+
+# * sepetten ürün silme
+def shopDelete(request, id):
+   shoping = Shoping.objects.filter(id=id)
+   if shoping.exists():
+      shoping = shoping.get()
+   shoping.delete()
+   return redirect("shoppage")
+

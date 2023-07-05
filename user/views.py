@@ -24,7 +24,7 @@ def loginPage(request):
             login(request, user)
             context.update({"profile": User.objects.get(
                 username=request.user.username)})
-            messages.success(request, 'Hoşgeldin'+ user.username + '!')
+            messages.success(request, 'Hoşgeldin '+ user.username + '!')
             return redirect('index')
         else:
             messages.warning(request, 'Kullanıcı adı veya şifre yanlış!!')
@@ -118,9 +118,9 @@ def profilePage(request):
                     messages.success(
                         request, "Şifreniz başarıyla değiştirildi..")
                 else:
-                    messages.warning(request, "şifreler eşleşmiyor!")
+                    messages.warning(request, "Şifreler eşleşmiyor!")
             else:
-                messages.warning(request, "şifreniz yanlış!")
+                messages.warning(request, "Şifreniz yanlış!")
 
             profile.save()
         user.save()

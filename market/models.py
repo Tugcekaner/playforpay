@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
-
 # Create your models here.
 
 # * oyunlar
@@ -61,7 +60,27 @@ class Player(models.Model):
         ("Oyuncu Resmi"), upload_to='product', max_length=100)
     price = models.FloatField(("Fiyat"), blank=True, null=True)
     video_embed = models.TextField(("Video Embed Kodu"), null=True, blank=True)
+    stok = models.IntegerField(("Stok"),null=True,blank=True, default=2)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
         return self.title
     
+# * sepet
+class Shoping(models.Model):
+   user = models.ForeignKey(User, verbose_name=("Kullanıcı"), on_delete=models.CASCADE)
+   product = models.ForeignKey(Product, verbose_name=("Ürün"), on_delete=models.CASCADE)
+   piece = models.IntegerField(("Ürün adeti"))
+   price = models.FloatField(("Ürün Sepet Fiyatı"), default=0)
+
+   def save(self, *args,**kwargs):
+      self.price = int(self.piece) * float(self.product.price)
+      self.price = round(self.price,2)
+      super().save(*args, **kwargs)
+
+   def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
+      return self.user.username
+
