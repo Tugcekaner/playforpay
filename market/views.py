@@ -392,28 +392,32 @@ def shoppingPage(request):
 
     if request.method == "POST":
         if 'odeme' in request.POST:
-            odeme = odeme.objects.create(
+            odeme = Payment.objects.create(
                 user = request.user,
                 total = total_price,
             )
             odeme.products.add(*products)
             odeme.save()
             return redirect('payment')
-        index = 0
-        for k,v in request.POST.items():
-            if "csrfmiddlewaretoken" not in k and "submit" not in k:
-                if index%2 == 0:
-                    shoping = shop.get(id=v)
-                    shoping.save()
-                elif index%2 == 1:
-                    if int(shoping.product.stok) >= int(v):
-                        shoping.piece = v
+        else:
+            index = 0
+            print(request.POST)
+            for k,v in request.POST.items():
+                if "csrfmiddlewaretoken" not in k and "submit" not in k:
+                    print(v)
+                    
+                    if index%2 == 0:
+                        shoping = shop.get(id=v)
                         shoping.save()
-                    else:
-                        messages.warning(request, shoping.product.title+' ürünün stok sayısını aştınız. max:'+ str(shoping.product.stok))
-            index +=1
-        shoping.save() 
-        return redirect('shoppage')
+                    elif index%2 == 1:
+                        if int(shoping.product.stok) >= int(v):
+                            shoping.piece = v
+                            shoping.save()
+                        else:
+                            messages.warning(request, shoping.product.title+' ürünün stok sayısını aştınız. max:'+ str(shoping.product.stok))
+                index +=1
+            shoping.save() 
+            return redirect('shoppage')
 
     context = {
       "shop":shop,

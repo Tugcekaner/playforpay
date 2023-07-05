@@ -49,6 +49,10 @@ class Product(models.Model):
 
     def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
         return self.title
+    
+    class Meta:
+        verbose_name_plural = 'Ürünler'
+        verbose_name = 'Ürün'
 
 # * oyuncu
 class Player(models.Model):
@@ -84,7 +88,7 @@ class Shoping(models.Model):
       super().save(*args, **kwargs)
 
    def __str__(self): 
-      return self.user.username 
+      return "Ürün : " +  self.product.title + " Adet : " + str(self.piece)
 
 # * ödeme
 class Payment(models.Model):

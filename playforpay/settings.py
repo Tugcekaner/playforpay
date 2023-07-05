@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'iyzipay',
-    'market',
+    'market.apps.MarketConfig',
     'user',
     'django.contrib.admin',
     'django.contrib.auth',
