@@ -12,174 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from django.contrib import messages
 import pprint
+from django.core.cache import cache #* dışarıdan postun içine bilgi kaydedebilmek için
 
 # ? pip install iyzipay
 # ? pip install requests
-# * ödeme 
-api_key = 'sandbox-DCEdEAASjyyBiJReO7tOlnLrSIzmN3Av'
-secret_key = 'sandbox-4XjmVhCoO0vl1ckfZ4rVhj1Jcfi7gCsE'
-base_url = 'sandbox-api.iyzipay.com'
-# ! canlıya alındığında sandbox- kısımlar silinecek
-# ! gerçek ödeme alabilmek için
-
-options = {
-    'api_key': api_key,
-    'secret_key': secret_key,
-    'base_url': base_url
-}
-sozlukToken = list()
-
-def payment(request):
-    context = dict()
-# * satın alan kişinin bilgilerini ödemeler için dinamik hale getirme
-# * buyerUser = request.user
-
-
-    buyer={
-        'id': 'BY789',
-        'name': 'John',
-        'surname': 'Doe',
-        'gsmNumber': '+905350000000',
-        'email': 'email@email.com',
-        'identityNumber': '74300864791',
-        'lastLoginDate': '2015-10-05 12:43:35',
-        'registrationDate': '2013-04-21 15:12:09',
-        'registrationAddress': 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-        'ip': '85.34.78.112',
-        'city': 'Istanbul',
-        'country': 'Turkey',
-        'zipCode': '34732'
-    }
-
-    address={
-        'contactName': 'Jane Doe',
-        'city': 'Istanbul',
-        'country': 'Turkey',
-        'address': 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-        'zipCode': '34732'
-    }
-
-    basket_items=[
-        {
-            'id': 'BI101',
-            'name': 'Binocular',
-            'category1': 'Collectibles',
-            'category2': 'Accessories',
-            'itemType': 'PHYSICAL',
-            'price': '0.3'
-        },
-        {
-            'id': 'BI102',
-            'name': 'Game code',
-            'category1': 'Game',
-            'category2': 'Online Game Items',
-            'itemType': 'VIRTUAL',
-            'price': '0.5'
-        },
-        {
-            'id': 'BI103',
-            'name': 'Usb',
-            'category1': 'Electronics',
-            'category2': 'Usb / Cable',
-            'itemType': 'PHYSICAL',
-            'price': '0.2'
-        }
-    ]
-# ! checkoutformcontent hatası alıyorsan price kısmını incele,hata oradadır
-    request={
-        'locale': 'tr',
-        'conversationId': '123456789',
-        'price': '1',
-        'paidPrice': '1.2',
-        'currency': 'TRY',
-        'basketId': 'B67832',
-        'paymentGroup': 'PRODUCT',
-        # * callback url önemli, kendi url linkini koymalısın
-        "callbackUrl": "http://127.0.0.1:8000/result/",
-        # * taksit seçenekleri kısmı
-        "enabledInstallments": ['2', '3', '6', '9','12'],
-        'buyer': buyer,
-        'shippingAddress': address,
-        'billingAddress': address,
-        'basketItems': basket_items,
-        # 'debitCardAllowed': True
-    }
-
-    checkout_form_initialize = iyzipay.CheckoutFormInitialize().create(request, options)
-
-    #print(checkout_form_initialize.read().decode('utf-8'))
-    page = checkout_form_initialize
-    header = {'Content-Type': 'application/json'}
-    content = checkout_form_initialize.read().decode('utf-8')
-    json_content = json.loads(content)
-    print(type(json_content))
-    print(json_content["checkoutFormContent"])
-    print("************************")
-    print(json_content["token"])
-    print("************************")
-    sozlukToken.append(json_content["token"])
-# * httpresponse kısmında mobil uyum için değişiklik yaptık
-    return HttpResponse(f'<div id="iyzipay-checkout-form" class="responsive">{json_content["checkoutFormContent"]}</div>')
-
-
-@require_http_methods(['POST'])
-@csrf_exempt
-def result(request):
-    context = dict()
-
-    url = request.META.get('index')
-
-    request = {
-        'locale': 'tr',
-        'conversationId': '123456789',
-        'token': sozlukToken[0]
-    }
-    checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
-    print("************************")
-    print(type(checkout_form_result))
-    result = checkout_form_result.read().decode('utf-8')
-    print("************************")
-    print(sozlukToken[0])   # Form oluşturulduğunda 
-    print("************************")
-    print("************************")
-    sonuc = json.loads(result, object_pairs_hook=list)
-    #print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
-    #print(sonuc[5][1])   # Test ödeme tutarı
-    print("************************")
-    for i in sonuc:
-        print(i)
-    print("************************")
-    print(sozlukToken)
-    print("************************")
-    if sonuc[0][1] == 'success':
-        context['success'] = 'Başarılı İŞLEMLER'
-        return HttpResponseRedirect(reverse('success'), context)
-
-    elif sonuc[0][1] == 'failure':
-        context['failure'] = 'Başarısız'
-        return HttpResponseRedirect(reverse('failure'), context)
-
-    return HttpResponse(url)
-
-
-
-def success(request):
-    context = dict()
-    context['success'] = 'İşlem Başarılı'
-
-    template = 'ok.html'
-    return render(request, template, context)
-
-
-def fail(request):
-    context = dict()
-    context['fail'] = 'İşlem Başarısız'
-
-    template = 'fail.html'
-    return render(request, template, context)
-
-
-
 
 # * Ana Sayfa
 def indexPage(request):
@@ -392,12 +228,13 @@ def shoppingPage(request):
 
     if request.method == "POST":
         if 'odeme' in request.POST:
-            odeme = Payment.objects.create(
-                user = request.user,
-                total = total_price,
-            )
-            odeme.products.add(*products)
-            odeme.save()
+            if not Payment.objects.filter(user=request.user,paymentCheck=False).exists():
+                odeme = Payment.objects.create(
+                    user = request.user,
+                    total = total_price,
+                )
+                odeme.products.add(*products)
+                odeme.save()
             return redirect('payment')
         else:
             index = 0
@@ -432,4 +269,175 @@ def shopDelete(request, id):
       shoping = shoping.get()
    shoping.delete()
    return redirect("shoppage")
+
+# * ödeme 
+api_key = 'sandbox-DCEdEAASjyyBiJReO7tOlnLrSIzmN3Av'
+secret_key = 'sandbox-4XjmVhCoO0vl1ckfZ4rVhj1Jcfi7gCsE'
+base_url = 'sandbox-api.iyzipay.com'
+# ! canlıya alındığında sandbox- kısımlar silinecek
+# ! gerçek ödeme alabilmek için
+
+options = {
+    'api_key': api_key,
+    'secret_key': secret_key,
+    'base_url': base_url
+}
+sozlukToken = list()
+
+def payment(request):
+    context = dict()
+# * satın alan kişinin bilgilerini ödemeler için dinamik hale getirme
+# * buyerUser = request.user
+
+    buyerUser = request.user
+    payment = Payment.objects.get(user=buyerUser,paymentCheck=False)
+    buyer={
+        'id': 'BY789',
+        'name': buyerUser.username,
+        'surname': 'Doe',
+        'gsmNumber': '+905350000000',
+        'email': buyerUser.email,
+        'identityNumber': '74300864791',
+        'lastLoginDate': str(buyerUser.last_login),
+        'registrationDate': '2013-04-21 15:12:09',
+        'registrationAddress': 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
+        'ip': '85.34.78.112',
+        'city': 'Istanbul',
+        'country': 'Turkey',
+        'zipCode': '34732'
+    }
+
+    address={
+        'contactName': 'Jane Doe',
+        'city': 'Istanbul',
+        'country': 'Turkey',
+        'address': 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
+        'zipCode': '34732'
+    }
+
+    basket_items=[
+        {
+            'id': 'BI101',
+            'name': 'Binocular',
+            'category1': 'Collectibles',
+            'category2': 'Accessories',
+            'itemType': 'PHYSICAL',
+            'price': '0.3'
+        },
+        {
+            'id': 'BI102',
+            'name': 'Game code',
+            'category1': 'Game',
+            'category2': 'Online Game Items',
+            'itemType': 'VIRTUAL',
+            'price': '0.5'
+        },
+        {
+            'id': 'BI103',
+            'name': 'Usb',
+            'category1': 'Electronics',
+            'category2': 'Usb / Cable',
+            'itemType': 'PHYSICAL',
+            'price': '0.2'
+        }
+    ]
+# ! checkoutformcontent hatası alıyorsan price kısmını incele,hata oradadır
+    request={
+        'locale': 'tr',
+        'conversationId': '123456789',
+        'price': '1',
+        'paidPrice': f'{payment.total}',
+        'currency': 'TRY',
+        'basketId': 'B67832',
+        'paymentGroup': 'PRODUCT',
+        # * callback url önemli, kendi url linkini koymalısın
+        "callbackUrl": "http://127.0.0.1:8000/result/",
+        # * taksit seçenekleri kısmı
+        "enabledInstallments": ['2', '3', '6', '9','12'],
+        'buyer': buyer,
+        'shippingAddress': address,
+        'billingAddress': address,
+        'basketItems': basket_items,
+        # 'debitCardAllowed': True
+    }
+
+    checkout_form_initialize = iyzipay.CheckoutFormInitialize().create(request, options)
+
+    #print(checkout_form_initialize.read().decode('utf-8'))
+    page = checkout_form_initialize
+    header = {'Content-Type': 'application/json'}
+    content = checkout_form_initialize.read().decode('utf-8')
+    json_content = json.loads(content)
+    print(type(json_content))
+    print(json_content["checkoutFormContent"])
+    print("************************")
+    print(json_content["token"])
+    token = json_content["token"]
+    cache.set('token',token)
+    print("************************")
+    sozlukToken.append(json_content["token"])
+# * httpresponse kısmında mobil uyum için değişiklik yaptık
+    return HttpResponse(f'<div id="iyzipay-checkout-form" class="responsive">{json_content["checkoutFormContent"]}</div>')
+
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def result(request):
+    context = dict()
+
+    url = request.META.get('index')
+    token = cache.get('token')
+    request = {
+        'locale': 'tr',
+        'conversationId': '123456789',
+        'token': token
+    }
+    checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
+    print("************************")
+    print(type(checkout_form_result))
+    result = checkout_form_result.read().decode('utf-8')
+    print("************************")
+    print(sozlukToken[0])   # Form oluşturulduğunda 
+    print("************************")
+    print("************************")
+    sonuc = json.loads(result, object_pairs_hook=list)
+    #print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
+    #print(sonuc[5][1])   # Test ödeme tutarı
+    print("************************")
+    for i in sonuc:
+        print(i)
+    print("************************")
+    print(sozlukToken)
+    print("************************")
+    if sonuc[0][1] == 'success':
+        context['success'] = 'Başarılı İŞLEMLER'
+        return HttpResponseRedirect(reverse('success'), context)
+
+    elif sonuc[0][1] == 'failure':
+        context['failure'] = 'Başarısız'
+        return HttpResponseRedirect(reverse('failure'), context)
+
+    return HttpResponse(url)
+
+
+
+def success(request):
+    shoping = Shoping.objects.filter(user=request.user)
+    odeme = Payment.objects.get(user=request.user,paymentCheck=False)
+    odeme.paymentCheck = True
+    odeme.save()
+    sepetim = Shoping.objects.filter(user=request.user,paymentCheck=False)
+    for i in sepetim:
+        i.paymentCheck = True
+        i.save()
+    messages.success(request,"Ödeme Başarılı")
+    shoping.delete()
+    return redirect('index')
+
+
+def fail(request):
+    messages.error(request,"Ödeme başarısız! Tekrar deneyiniz.")
+    return redirect('shoppage')
+
+
 

@@ -95,6 +95,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Shoping)
     total = models.IntegerField()
+    paymentCheck = models.BooleanField(default=False,verbose_name="Ödeme yapıldı mı?") #type checkbox
     paymentDate = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

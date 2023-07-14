@@ -1,4 +1,5 @@
 
+# * Birden fazla sayfada kullanılacak bir fonksiyon yazmak için
 
 from market.models import Shoping
 

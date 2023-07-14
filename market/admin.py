@@ -6,7 +6,8 @@ class SepetAdmin(admin.ModelAdmin):
     list_filter = ['user','product','paymentCheck']
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'total', 'paymentDate']
+    list_display = ['user', 'total', 'paymentDate','paymentCheck']
+
     
 # Register your models here.
 admin.site.register(Product)

@@ -6,11 +6,8 @@ from django.contrib import messages
 import time
 # from django.db.models import Count
 
-# Create your views here.
 
 # * login sayfası
-
-
 def loginPage(request):
     if request.method == "POST":
         username = request.POST.get("username")
