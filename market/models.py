@@ -16,6 +16,11 @@ class Category(models.Model):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name_plural = 'Oyun Kategorileri'
+        verbose_name = 'Oyun Adı'  
+
+
     def __str__(self):
         return self.title
 
@@ -27,6 +32,11 @@ class Type(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'Ürün Türleri'
+        verbose_name = 'Ürün Türü'
+
 
     def __str__(self):
         return self.title
@@ -71,24 +81,34 @@ class Player(models.Model):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name_plural = 'Oyuncular'
+        verbose_name = 'Oyuncu'   
+
+
     def __str__(self):  # admin panelndeki isimlendirmeyi değiştirir
         return self.title
     
 # * sepet
 class Shoping(models.Model):
-   user = models.ForeignKey(User, verbose_name=("Kullanıcı"), on_delete=models.CASCADE)
-   product = models.ForeignKey(Product, verbose_name=("Ürün"), on_delete=models.CASCADE)
-   piece = models.IntegerField(("Ürün adeti"))
-   price = models.FloatField(("Ürün Sepet Fiyatı"), default=0)
-   paymentCheck = models.BooleanField(default=False,verbose_name="Ödeme yapıldı mı?") #type checkbox
+    user = models.ForeignKey(User, verbose_name=("Kullanıcı"), on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name=("Ürün"), on_delete=models.CASCADE)
+    piece = models.IntegerField(("Ürün adeti"))
+    price = models.FloatField(("Ürün Sepet Fiyatı"), default=0)
+    paymentCheck = models.BooleanField(default=False,verbose_name="Ödeme yapıldı mı?") #type checkbox
 
-   def save(self, *args,**kwargs):
-      self.price = int(self.piece) * float(self.product.price)
-      self.price = round(self.price,2)
-      super().save(*args, **kwargs)
+    def save(self, *args,**kwargs):
+        self.price = int(self.piece) * float(self.product.price)
+        self.price = round(self.price,2)
+        super().save(*args, **kwargs)
 
-   def __str__(self): 
-      return "Ürün : " +  self.product.title + " Adet : " + str(self.piece)
+    class Meta:
+        verbose_name_plural = 'Alışveriş Sepetleri'   
+        verbose_name = 'Sepet'
+
+
+    def __str__(self): 
+        return "Ürün : " +  self.product.title + " Adet : " + str(self.piece)
 
 # * ödeme
 class Payment(models.Model):
@@ -97,6 +117,10 @@ class Payment(models.Model):
     total = models.IntegerField()
     paymentCheck = models.BooleanField(default=False,verbose_name="Ödeme yapıldı mı?") #type checkbox
     paymentDate = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name_plural = 'Ödemeler'   
+        verbose_name = 'Ödeme'
 
     def __str__(self):
         return self.user.username
