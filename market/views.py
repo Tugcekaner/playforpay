@@ -114,7 +114,7 @@ def sellerProductPage(request,id):
     products=Product.objects.filter(user=user)
 
     other_sellers = User.objects.exclude(id=id)
-    random_sellers = random.sample(list(other_sellers), 6)
+    random_sellers = random.sample(list(other_sellers), 2)
 
     context={
         'products': products,
